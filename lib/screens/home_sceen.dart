@@ -1,0 +1,39 @@
+import 'package:contactapp/models/contact_model.dart';
+import 'package:contactapp/providers/contact_provider.dart';
+import 'package:contactapp/screens/input_screen.dart';
+import 'package:contactapp/widgets/list_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class HomeScreen extends ConsumerWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context,WidgetRef ref) {
+    final showModel = ref.watch(ContactProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Contacts'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () async {
+              // Navigate to InputScreen and wait for the result
+              await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => InputScreen(),
+                ),
+              );
+            },
+          )
+        ],
+      ),
+      body: showModel.isEmpty
+          ? Center(
+        child: Text('No contacts added yet!'),
+      )
+          : ListWidget(contactmodel: showModel),
+    );
+  }
+}
