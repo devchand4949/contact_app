@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:contactapp/models/contact_model.dart';
 import 'package:contactapp/providers/contact_provider.dart';
+import 'package:contactapp/screens/camera_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,15 +17,14 @@ class InputScreen extends ConsumerStatefulWidget {
 class _InputScreenState extends ConsumerState<InputScreen> {
 
   final _nameController = TextEditingController();
-
+  File? _selectedImage;
   void _saveData(){
 
     final saveNameController = _nameController.text;
-    if(saveNameController.isEmpty){
+    if(saveNameController.isEmpty || _selectedImage == null){
       return;
     }
-    ref.read(ContactProvider.notifier).addModel(saveNameController);
-
+    ref.read(ContactProvider.notifier).addModel(saveNameController,_selectedImage!);
     Navigator.of(context).pop();
   }
 
@@ -43,11 +45,10 @@ class _InputScreenState extends ConsumerState<InputScreen> {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            Center(
-              child: CircleAvatar(
-                child: Icon(Icons.person),
-              ),
-            ),
+            // camera screen
+            CameraScreen(onSelectPicker: (image){
+              _selectedImage = image;
+            }),
             SizedBox(height: 30,),
             TextField(
               controller:_nameController,
