@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ContactNotifier extends StateNotifier<List<ContactModel>>{
   ContactNotifier() : super(const []);
 
-  void addModel(String name,File image){
-      final newContact = ContactModel(name: name,image:image);
+  void addModel(String name,File image,String phone,String email){
+      final newContact = ContactModel(name: name,image:image,phone: phone,email: email);
       state = [newContact,...state];
   }
 }
