@@ -18,5 +18,15 @@ class ContactModel {
   final File image;
   final String phone;
   final String email;
+
+
+   Map<String,dynamic> toJson(){
+     return{
+       'name' : name,
+       'image' : image,
+       'phone' : phone,
+       'email' : email
+     };
+   }
 }
 
