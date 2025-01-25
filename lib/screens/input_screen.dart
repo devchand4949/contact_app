@@ -1,44 +1,43 @@
 import 'dart:io';
+import 'package:uuid/uuid.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:contactapp/models/contact_model.dart';
-import 'package:contactapp/providers/contact_provider.dart';
 import 'package:contactapp/screens/camera_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class InputScreen extends ConsumerStatefulWidget {
+class InputScreen extends StatefulWidget {
   const InputScreen({super.key});
 
   @override
-  ConsumerState<InputScreen> createState() => _InputScreenState();
+  State<InputScreen> createState() => _InputScreenState();
 }
 
-class _InputScreenState extends ConsumerState<InputScreen> {
+class _InputScreenState extends State<InputScreen> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();  // GlobalKey for form validation
-  File? _selectedImage;
+  // File? _selectedImage;
 
-  void _saveData() {
-    if (_formKey.currentState?.validate() ?? false) {
+  void _saveData() async {
+    if (_formKey.currentState!.validate()) {
       final saveNameController = _nameController.text;
       final savePhoneController = _phoneController.text;
       final saveEmailController = _emailController.text;
+        _formKey.currentState!.save();
+      // if (_selectedImage == null) {
+      //   print('Please select an image');
+      //   return;
+      // }
 
-      // Placeholder for default image if none selected
-      final ifbydefaultImage = _selectedImage ?? File('path_to_default_image_or_icon_placeholder');
+      final id = Uuid().v4();
+      final user = UserModel(id: id, name: saveNameController, email: saveEmailController, contactNo: savePhoneController);
+      final firebase = FirebaseFirestore.instance.collection('users');
+      firebase.doc(id).set(user.toJson());
 
-      // Add contact if validation passes
-      ref.read(ContactProvider.notifier).addModel(
-          saveNameController,
-          ifbydefaultImage,
-          savePhoneController,
-          saveEmailController
-      );
-
-      Navigator.of(context).pop();
     }
+    Navigator.of(context).pop();
   }
 
   @override
@@ -59,9 +58,9 @@ class _InputScreenState extends ConsumerState<InputScreen> {
           key: _formKey,  // Assign the GlobalKey to the form
           child: Column(
             children: [
-              CameraScreen(onSelectPicker: (image) {
-                _selectedImage = image;
-              }),
+              // CameraScreen(onSelectPicker: (image) {
+              //   _selectedImage = image;
+              // }),
               SizedBox(height: 30),
               // Name field..........................
               TextFormField(
@@ -97,10 +96,6 @@ class _InputScreenState extends ConsumerState<InputScreen> {
                   if (value.length != 10) {
                     return 'Enter a 10-digit phone number';
                   }
-                  final phoneRegExp = RegExp(r'^\+?[0-9]$');
-                  if (!phoneRegExp.hasMatch(value)) {
-                    return 'Please enter a valid phone number';
-                  }
                   return null;  // No error if the phone number is valid
                 },
               ),
@@ -118,7 +113,7 @@ class _InputScreenState extends ConsumerState<InputScreen> {
                     return 'Please enter an email address';
                   }
                   if(!EmailValidator.validate(value)){//using package in email validator
-                  return 'Please enter valid email address';
+                    return 'Please enter valid email address';
                   }
                   return null;  // No error if the email is valid
                 },

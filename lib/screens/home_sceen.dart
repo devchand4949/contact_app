@@ -5,12 +5,12 @@ import 'package:contactapp/widgets/list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
-    final showModel = ref.watch(ContactProvider);
+  Widget build(BuildContext context,) {
 
     return Scaffold(
       appBar: AppBar(
@@ -29,11 +29,7 @@ class HomeScreen extends ConsumerWidget {
           )
         ],
       ),
-      body: showModel.isEmpty
-          ? Center(
-        child: Text('No contacts added yet!'),
-      )
-          : ListWidget(contactmodel: showModel),
+      body:ListWidget()
     );
   }
 }
