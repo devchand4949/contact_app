@@ -1,5 +1,6 @@
 import 'package:contactapp/main.dart';
 import 'package:contactapp/models/contact_model.dart';
+import 'package:contactapp/screens/home_sceen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contactapp/screens/update_screen.dart';
@@ -13,8 +14,8 @@ class DetailScreen extends StatelessWidget {
     FirebaseFirestore.instance.collection('users').snapshots();
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
     ref.doc(detailScn.id).delete();
-
-    Navigator.of(context).pop();
+    Navigator.of(context).push(MaterialPageRoute(builder: (screen)=>HomeScreen()));
+      print('delete');
   }
 
   void _showoption(context) async {

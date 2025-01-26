@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:contactapp/screens/home_sceen.dart';
 import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
@@ -34,10 +35,9 @@ class _UpdateScreenState extends State<UpdateScreen> {
   void _saveData() async {
     print('call update method');
     if (_formKey.currentState!.validate()) {
-      final saveNameController = _nameController.text;
-      final savePhoneController = _phoneController.text;
-      final saveEmailController = _emailController.text;
-      _formKey.currentState!.save();
+      final saveNameController = _nameController.text.trim();
+      final savePhoneController = _phoneController.text.trim();
+      final saveEmailController = _emailController.text.trim();
       // if (_selectedImage == null) {
       //   print('Please select an image');
       //   return;
@@ -48,7 +48,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
       final firebase = FirebaseFirestore.instance.collection('users');
       await firebase.doc(user.id).update(user.toJson());
       print('data update sucessfully');
-    Navigator.of(context).pop();
+    Navigator.of(context).push(MaterialPageRoute(builder: (screen)=>HomeScreen()));
 
     }
   }

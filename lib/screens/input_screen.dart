@@ -21,11 +21,10 @@ class _InputScreenState extends State<InputScreen> {
   // File? _selectedImage;
 
   void _saveData() async {
-    if (_formKey.currentState!.validate()) {
-      final saveNameController = _nameController.text;
-      final savePhoneController = _phoneController.text;
-      final saveEmailController = _emailController.text;
-        _formKey.currentState!.save();
+    if(_formKey.currentState!.validate()) {
+      final saveNameController = _nameController.text.trim();
+      final savePhoneController = _phoneController.text.trim();
+      final saveEmailController = _emailController.text.trim();
       // if (_selectedImage == null) {
       //   print('Please select an image');
       //   return;
@@ -33,11 +32,11 @@ class _InputScreenState extends State<InputScreen> {
 
       final id = Uuid().v4();
       final user = UserModel(id: id, name: saveNameController, email: saveEmailController, contactNo: savePhoneController);
-      final firebase = FirebaseFirestore.instance.collection('users');
-      firebase.doc(id).set(user.toJson());
+      final firebase = await FirebaseFirestore.instance.collection('users');
+      await firebase.doc(id).set(user.toJson());
 
+      Navigator.of(context).pop();
     }
-    Navigator.of(context).pop();
   }
 
   @override
