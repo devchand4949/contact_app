@@ -58,6 +58,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Update Contact'),
+        toolbarHeight: 80,
         actions: [
           TextButton(
             child: Text('Save'),

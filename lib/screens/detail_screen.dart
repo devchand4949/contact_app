@@ -56,6 +56,7 @@ class DetailScreen extends StatelessWidget {
         title: Text(
           'Contact Detail',
         ),
+        toolbarHeight: 80,
         actions: [
           TextButton(
               onPressed: () => _showoption(context),

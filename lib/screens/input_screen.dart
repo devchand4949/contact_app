@@ -17,11 +17,11 @@ class _InputScreenState extends State<InputScreen> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();  // GlobalKey for form validation
+  final _formKey = GlobalKey<FormState>(); // GlobalKey for form validation
   // File? _selectedImage;
 
   void _saveData() async {
-    if(_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
       final saveNameController = _nameController.text.trim();
       final savePhoneController = _phoneController.text.trim();
       final saveEmailController = _emailController.text.trim();
@@ -29,10 +29,29 @@ class _InputScreenState extends State<InputScreen> {
       //   print('Please select an image');
       //   return;
       // }
+      final firebase = await FirebaseFirestore.instance.collection('users');
+
+      final existingUser = await firebase
+          .where('contactNo', isEqualTo: savePhoneController)
+          .get();
+
+      if (existingUser.docs.isNotEmpty) {
+        // If the phone number exists, show an error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('This phone number already exists. Please enter another number.',style: TextStyle(color: Colors.white,),),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
 
       final id = Uuid().v4();
-      final user = UserModel(id: id, name: saveNameController, email: saveEmailController, contactNo: savePhoneController);
-      final firebase = await FirebaseFirestore.instance.collection('users');
+      final user = UserModel(
+          id: id,
+          name: saveNameController,
+          email: saveEmailController,
+          contactNo: savePhoneController);
       await firebase.doc(id).set(user.toJson());
 
       Navigator.of(context).pop();
@@ -44,6 +63,7 @@ class _InputScreenState extends State<InputScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Contact'),
+        toolbarHeight: 80,
         actions: [
           IconButton(
             icon: Icon(Icons.save),
@@ -53,8 +73,9 @@ class _InputScreenState extends State<InputScreen> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
-        child: Form(  // Wrap fields with a Form widget
-          key: _formKey,  // Assign the GlobalKey to the form
+        child: Form(
+          // Wrap fields with a Form widget
+          key: _formKey, // Assign the GlobalKey to the form
           child: Column(
             children: [
               // CameraScreen(onSelectPicker: (image) {
@@ -95,7 +116,7 @@ class _InputScreenState extends State<InputScreen> {
                   if (value.length != 10) {
                     return 'Enter a 10-digit phone number';
                   }
-                  return null;  // No error if the phone number is valid
+                  return null; // No error if the phone number is valid
                 },
               ),
               SizedBox(height: 20),
@@ -111,10 +132,11 @@ class _InputScreenState extends State<InputScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter an email address';
                   }
-                  if(!EmailValidator.validate(value)){//using package in email validator
+                  if (!EmailValidator.validate(value)) {
+                    //using package in email validator
                     return 'Please enter valid email address';
                   }
-                  return null;  // No error if the email is valid
+                  return null; // No error if the email is valid
                 },
               ),
             ],
