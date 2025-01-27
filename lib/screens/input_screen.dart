@@ -39,7 +39,12 @@ class _InputScreenState extends State<InputScreen> {
         // If the phone number exists, show an error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('This phone number already exists. Please enter another number.',style: TextStyle(color: Colors.white,),),
+            content: Text(
+              'This phone number already exists. Please enter another number.',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
             backgroundColor: Colors.red,
           ),
         );
