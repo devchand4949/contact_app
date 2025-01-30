@@ -1,7 +1,20 @@
+// Project-level build.gradle (android/build.gradle)
+buildscript {
+    repositories {
+        google()  // Google's Maven repository
+        mavenCentral()  // Maven Central repository
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.0.2'   // or the latest version
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21'  // Kotlin plugin
+        classpath 'com.google.gms:google-services:4.4.2'  // Firebase services plugin
+    }
+}
+
 allprojects {
     repositories {
-        google()
-        mavenCentral()
+        google()  // Google's Maven repository
+        mavenCentral()  // Maven Central repository
     }
 }
 
@@ -9,6 +22,7 @@ rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }

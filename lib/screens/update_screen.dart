@@ -48,7 +48,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
       final firebase = FirebaseFirestore.instance.collection('users');
       await firebase.doc(user.id).update(user.toJson());
       print('data update sucessfully');
-    Navigator.of(context).push(MaterialPageRoute(builder: (screen)=>HomeScreen()));
+      // सभी स्क्रीन को पॉप करने के बाद होम स्क्रीन पर नेविगेट करें
+      Navigator.of(context).popUntil((route) => route.isFirst); // यह होम स्क्रीन पर जाने तक सभी स्क्रीन को पॉप कर देगा
 
     }
   }

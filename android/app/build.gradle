@@ -1,33 +1,28 @@
+// App-level build.gradle (android/app/build.gradle)
 plugins {
     id "com.android.application"
-    // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
-    // END: FlutterFire Configuration
+    id 'com.google.gms.google-services'  // Firebase plugin
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "dev.flutter.flutter-gradle-plugin"
+    id "dev.flutter.flutter-gradle-plugin"  // Flutter plugin
 }
 
 android {
-    namespace = "com.example.contactapp"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    namespace = "com.example.contactapp"  // AGP 7.0+ required
+    compileSdk = flutter.compileSdkVersion  // Use Flutter SDK's compile SDK version
+    ndkVersion = flutter.ndkVersion  // Use the NDK version defined by Flutter
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8  // Java compatibility 1.8
+        targetCompatibility = JavaVersion.VERSION_1_8  // Java compatibility 1.8
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_1_8  // Kotlin targeting JVM 1.8
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.contactapp"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        applicationId = 'com.example.contactapp'
+        minSdk = 21
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -35,13 +30,11 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            signingConfig = signingConfigs.debug  // Signing config for release
         }
     }
 }
 
 flutter {
-    source = "../.."
+    source = "../.."  // Flutter source directory
 }

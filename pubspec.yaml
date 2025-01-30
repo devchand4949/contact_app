@@ -27,6 +27,12 @@ dependencies:
   firebase_core: ^3.10.1
   cloud_firestore: ^5.6.2
   firebase_storage: ^12.4.1
+  flutter_animated_splash: ^0.0.10
+  flutter_animate: ^4.5.2
+  azlistview: ^2.0.0
+  url_launcher: ^6.3.1
+  direct_call_plus: ^1.0.4
+
 
 dev_dependencies:
   flutter_test:
